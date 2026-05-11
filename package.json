@@ -1,0 +1,16 @@
+{
+  "name": "@nemorize/korean-banking-email-parser",
+  "version": "0.0.1",
+  "description": "Decrypt and parse email notification regarding deposits and withdrawals from South Korea banks.",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "type": "module",
+  "repository": "https://github.com/nemorize/korean-banking-email-parser",
+  "author": "Ji Yong, Kim <jiyong.kim@headercat.com>",
+  "license": "MIT",
+  "dependencies": {
+    "jsdom": "^29.1.1"
+  }
+}
