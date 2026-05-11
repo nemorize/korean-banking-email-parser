@@ -1,0 +1,44 @@
+on:
+    workflow_dispatch:
+        inputs:
+            tags:
+                description: 'Semantic version tag (v.x.y.z)'
+                required: true
+                type: string
+            release_body:
+                description: 'Description of the release'
+                type: string
+jobs:
+    release:
+        name: Release and publish to NPM registry
+        runs-on: ubuntu-latest
+        permissions:
+            actions: write
+            contents: write
+            id-token: write
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v6
+              with:
+                node-version: latest
+            
+            - name: Bump version
+              uses: ramonpaolo/bump-version@v2.3.1
+              with:
+                tag: ${{ inputs.tags }}
+                commit: true
+                branch_to_push: main
+
+            - name: Publish to NPM
+              run: npm ci
+                   npm publish
+
+            - name: Create GitHub Release
+              uses: ncipollo/release-action@v1
+              with:
+                tag: ${{ inputs.tags }}
+                release_name: ${{ inputs.tags }}
+                body: ${{ inputs.release_body }}
