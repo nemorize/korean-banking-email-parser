@@ -58,20 +58,20 @@ console.log(
 ```ts
 parse(html: string, password: string, timeout: number) => Promise<{
     account: {
-        accountNumber: string|null,
-        accountHolder: string|null,
-        accountStatus: string|null,
-        balance: number|null,
-        availableBalance: number|null,
+        accountNumber: string,
+        accountHolder: string,
+        accountStatus: string,
+        balance: number,
+        availableBalance: number,
     },
     transactions: {
-        transactionDate: string|null,
-        type: 'deposit'|'withdrawal'|null,
-        amount: number|null,
-        balanceAfter: number|null,
-        branch: string|null,
-        bank: string|null,
-        description: string|null,
+        transactionDate: string,
+        type: 'deposit'|'withdrawal'|'unknown',
+        amount: number,
+        balanceAfter: number,
+        branch: string,
+        bank: string,
+        description: string,
     }[],
 }>
 ```
@@ -92,6 +92,7 @@ parse(html: string, password: string, timeout: number) => Promise<{
   * `type`: 입금 또는 출금.
     * `'deposit'`: 입금.
     * `'withdrawal'`: 출금.
+    * `'unknown'`: 알 수 없음.
   * `amount`: 입출금 액수.
   * `balanceAfter`: 입출금 후 계좌의 잔액.
   * `branch`: 해당 트랜잭션이 이루어진 거래점.

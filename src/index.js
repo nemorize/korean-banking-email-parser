@@ -10,20 +10,20 @@ import { decryptVestMail } from './vestmail.js';
  * 
  * @returns {Promise<{
  *   account: {
- *     accountNumber: string|null,
- *     accountHolder: string|null,
- *     accountStatus: string|null,
- *     balance: number|null,
- *     availableBalance: number|null,
+ *     accountNumber: string,
+ *     accountHolder: string,
+ *     accountStatus: string,
+ *     balance: number,
+ *     availableBalance: number,
  *   },
  *   transactions: {
- *     transactionDate: string|null,
- *     type: 'deposit'|'withdrawal'|null,
- *     amount: number|null,
- *     balanceAfter: number|null,
- *     branch: string|null,
- *     bank: string|null,
- *     description: string|null,
+ *     transactionDate: string,
+ *     type: 'deposit'|'withdrawal'|'unknown',
+ *     amount: number,
+ *     balanceAfter: number,
+ *     branch: string,
+ *     bank: string,
+ *     description: string,
  *   }[]
  * }>}
  */

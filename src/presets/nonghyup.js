@@ -1,4 +1,3 @@
-import { JSDOM } from 'jsdom';
 
 export const nonghyupPreset = {
     verifier: (html) => html.includes('입출금 거래 내역 조회'),
@@ -6,16 +5,6 @@ export const nonghyupPreset = {
     transactions: parseNonghyupTransactions,
 };
 
-/**
- * @param {JSDOM} dom 
- * @returns {{
- *   accountNumber: string|null,
- *   accountHolder: string|null,
- *   accountStatus: string|null,
- *   balance: number|null,
- *   availableBalance: number|null,
- * }}
- */
 function parseNonghyupAccount(dom) {
     const { document } = dom.window;
     return {
@@ -27,18 +16,6 @@ function parseNonghyupAccount(dom) {
     };
 }
 
-/**
- * @param {JSDOM} dom 
- * @return {{
- *   transactionDate: string|null,
- *   type: 'deposit'|'withdrawal'|null,
- *   amount: number|null,
- *   balanceAfter: number|null,
- *   branch: string|null,
- *   bank: string|null,
- *   description: string|null,
- * }[]}
- */
 function parseNonghyupTransactions(dom) {
     const { document } = dom.window;
     const rows = [...document.querySelectorAll('tr')];
@@ -50,7 +27,7 @@ function parseNonghyupTransactions(dom) {
         }
         transactions.push({
             transactionDate: cells[1],
-            type: cells[2] === '입금' ? 'deposit' : cells[2] === '출금' ? 'withdrawal' : null,
+            type: cells[2] === '입금' ? 'deposit' : cells[2] === '출금' ? 'withdrawal' : 'unknown',
             amount: parseMoney(cells[3]),
             balanceAfter: parseMoney(cells[4]),
             branch: cells[5],
@@ -64,14 +41,14 @@ function parseNonghyupTransactions(dom) {
 function parseMoney(text) {
     text = normalizeText(text);
     if (!text) {
-        return null;
+        return 0;
     }
     if (!text.endsWith('원')) {
-        return null;
+        return 0;
     }
     const number = Number(text.replace(/[^0-9\-]/g, ''));
     if (!number || isNaN(number)) {
-        return null;
+        return 0;
     }
     return number;
 }
@@ -92,7 +69,7 @@ function findValueByLabel(document, label) {
             }
         }
     }
-    return null;
+    return '';
 }
 
 function isTransactionRow(cells) {
